@@ -1,0 +1,67 @@
+header:
+  version: 8
+
+machine: rockchip-px30-ctouch-20
+distro: rockchip-distro-x11
+target: px30-multimedia-image
+
+repos:
+  meta-rockchip:
+
+  poky:
+    url: "https://git.yoctoproject.org/git/poky"
+    refspec: master
+    layers:
+      meta:
+      meta-poky:
+      meta-yocto-bsp:
+
+  meta-openembedded:
+    url: "https://github.com/openembedded/meta-openembedded.git"
+    refspec: master
+    layers:
+      meta-oe:
+      meta-python:
+      meta-networking:
+      meta-multimedia:
+
+  meta-arm:
+    url: "https://git.yoctoproject.org/git/meta-arm.git"
+    refspec: master
+    layers:
+      meta-arm-bsp:
+      meta-arm:
+      meta-arm-toolchain:
+
+bblayers_conf_header:
+  standard: |
+    POKY_BBLAYERS_CONF_VERSION = "2"
+    BBPATH = "${TOPDIR}"
+    BBFILES ?= ""
+local_conf_header:
+  custom: |
+    AUTHOR = "Suniel Mahesh"
+    IMAGE_FEATURES:append = " debug-tweaks x11-base"
+
+
+    # u-boot, linux
+    PREFERRED_PROVIDER_virtual/kernel = "linux-ctouch"
+    PREFERRED_PROVIDER_u-boot = "u-boot-ctouch"
+    PREFERRED_PROVIDER_virtual/bootloader = "u-boot-ctouch"
+
+    # systemd
+    DISTRO_FEATURES:append = " systemd"
+    VIRTUAL-RUNTIME_init_manager = "systemd"
+    DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
+
+    DISTRO_FEATURES:remove = " wayland"
+    
+    # renew-renew-vista-e custom image
+    IMAGE_ROOTFS_EXTRA_SPACE = "524288"
+    IMAGE_FSTYPES_renew-vista-e += "ext4 wic.xz"
+    IMAGE_BOOT_FILES_renew-vista-e = " \
+        ${KERNEL_IMAGETYPE} \
+        ${KERNEL_DEVICETREE} \
+        "
+    WKS_FILE_DEPENDS ?= "virtual/kernel virtual/bootloader"
+    WKS_FILES = "rockchip.wks"
