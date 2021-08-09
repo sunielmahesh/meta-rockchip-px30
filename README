@@ -1,0 +1,20 @@
+Readme for meta-rockchip:
+
+1.
+Install packages:
+
+sudo apt update
+sudo apt install libgmp3-dev
+sudo apt install libmpc-dev
+sudo apt install libc6-dev-i386
+
+2.
+Install kas:
+
+sudo pip3 install kas
+
+3.
+mkdir px30
+cd px30
+git clone https://github.com/sunielmahesh/meta-rockchip.git
+kas build meta-rockchip/rockchip-px30-ctouch-20.yml
