@@ -1,0 +1,91 @@
+From 9c4bc74567d45844b174c8178c30aa315618bf1f Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Wed, 4 Aug 2021 14:35:49 +0530
+Subject: [PATCH 2/5] arm64: dts: rockchip: px30: Move dmc into -u-boot.dtsi
+
+dmc node is specific to U-Boot, it is always better practice
+to maintain U-Boot specific nodes into -u-boot.dtsi files
+in order to maintain Linux dts file sync compatibility.
+
+Move the dmc into px30-u-boot.dtsi, also add dmc node
+explicitly in rk3326-odroid-go2-u-boot.dtsi since it is
+using px30.dts.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+---
+ arch/arm/dts/px30-u-boot.dtsi              | 10 ++++++----
+ arch/arm/dts/px30.dtsi                     |  5 -----
+ arch/arm/dts/rk3326-odroid-go2-u-boot.dtsi | 10 ++++++----
+ 3 files changed, 12 insertions(+), 13 deletions(-)
+
+diff --git a/arch/arm/dts/px30-u-boot.dtsi b/arch/arm/dts/px30-u-boot.dtsi
+index 029c8fbd8d..bbed7dcde5 100644
+--- a/arch/arm/dts/px30-u-boot.dtsi
++++ b/arch/arm/dts/px30-u-boot.dtsi
+@@ -13,6 +13,12 @@
+ 		u-boot,spl-boot-order = &emmc, &sdmmc;
+ 	};
+ 
++	dmc {
++		u-boot,dm-pre-reloc;
++		compatible = "rockchip,px30-dmc", "syscon";
++		reg = <0x0 0xff2a0000 0x0 0x1000>;
++	};
++
+ 	rng: rng@ff0b0000 {
+ 		compatible = "rockchip,cryptov2-rng";
+ 		reg = <0x0 0xff0b0000 0x0 0x4000>;
+@@ -20,10 +26,6 @@
+ 	};
+ };
+ 
+-&dmc {
+-	u-boot,dm-pre-reloc;
+-};
+-
+ &uart2 {
+ 	clock-frequency = <24000000>;
+ 	u-boot,dm-pre-reloc;
+diff --git a/arch/arm/dts/px30.dtsi b/arch/arm/dts/px30.dtsi
+index b6c79e7ed3..e892d3b5a5 100644
+--- a/arch/arm/dts/px30.dtsi
++++ b/arch/arm/dts/px30.dtsi
+@@ -151,11 +151,6 @@
+ 		interrupt-affinity = <&cpu0>, <&cpu1>, <&cpu2>, <&cpu3>;
+ 	};
+ 
+-	dmc: dmc {
+-		compatible = "rockchip,px30-dmc", "syscon";
+-		reg = <0x0 0xff2a0000 0x0 0x1000>;
+-	};
+-
+ 	display_subsystem: display-subsystem {
+ 		compatible = "rockchip,display-subsystem";
+ 		ports = <&vopb_out>, <&vopl_out>;
+diff --git a/arch/arm/dts/rk3326-odroid-go2-u-boot.dtsi b/arch/arm/dts/rk3326-odroid-go2-u-boot.dtsi
+index 00767d2abd..93bc399087 100644
+--- a/arch/arm/dts/rk3326-odroid-go2-u-boot.dtsi
++++ b/arch/arm/dts/rk3326-odroid-go2-u-boot.dtsi
+@@ -7,13 +7,15 @@
+ 	chosen {
+ 		u-boot,spl-boot-order = &sdmmc;
+ 	};
+-};
+ 
+-&cru {
+-	u-boot,dm-pre-reloc;
++	dmc {
++		u-boot,dm-pre-reloc;
++		compatible = "rockchip,px30-dmc", "syscon";
++		reg = <0x0 0xff2a0000 0x0 0x1000>;
++	};
+ };
+ 
+-&dmc {
++&cru {
+ 	u-boot,dm-pre-reloc;
+ };
+ 
+-- 
+2.25.1
+

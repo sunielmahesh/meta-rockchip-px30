@@ -1,0 +1,72 @@
+From 16a56d4c4176564df6cca11fccc3e9d7567ee8a8 Mon Sep 17 00:00:00 2001
+From: Jagan Teki <jagan@amarulasolutions.com>
+Date: Wed, 4 Aug 2021 14:37:11 +0530
+Subject: [PATCH 5/5] engicam: Rename board dir, px30_core to px30
+
+Engicam hardware design solutions are based on System On Modules(SoM)
+with various SoCs like i.MX6, i.MX8 and PX30 etc.
+
+The current directory structure uses the simplest way to understand
+these designs by listing each of these SoC in board/engicam/SoC and
+inside SoC directory has SoM file name as a board file name.
+
+Right now all of the SoC's follow a similar approach except px30.
+So rename px30_core to px30.
+
+Signed-off-by: Jagan Teki <jagan@amarulasolutions.com>
+---
+ arch/arm/mach-rockchip/px30/Kconfig           | 2 +-
+ board/engicam/{px30_core => px30}/Kconfig     | 2 +-
+ board/engicam/{px30_core => px30}/MAINTAINERS | 0
+ board/engicam/{px30_core => px30}/Makefile    | 0
+ board/engicam/{px30_core => px30}/px30_core.c | 0
+ 5 files changed, 2 insertions(+), 2 deletions(-)
+ rename board/engicam/{px30_core => px30}/Kconfig (90%)
+ rename board/engicam/{px30_core => px30}/MAINTAINERS (100%)
+ rename board/engicam/{px30_core => px30}/Makefile (100%)
+ rename board/engicam/{px30_core => px30}/px30_core.c (100%)
+
+diff --git a/arch/arm/mach-rockchip/px30/Kconfig b/arch/arm/mach-rockchip/px30/Kconfig
+index 98e09019a2..7b9b380dfa 100644
+--- a/arch/arm/mach-rockchip/px30/Kconfig
++++ b/arch/arm/mach-rockchip/px30/Kconfig
+@@ -68,7 +68,7 @@ config DEBUG_UART_CHANNEL
+ 	  For using the UART for early debugging the route to use needs
+ 	  to be declared (0 or 1).
+ 
+-source "board/engicam/px30_core/Kconfig"
++source "board/engicam/px30/Kconfig"
+ source "board/hardkernel/odroid_go2/Kconfig"
+ source "board/rockchip/evb_px30/Kconfig"
+ 
+diff --git a/board/engicam/px30_core/Kconfig b/board/engicam/px30/Kconfig
+similarity index 90%
+rename from board/engicam/px30_core/Kconfig
+rename to board/engicam/px30/Kconfig
+index a03be78369..10a7ec203f 100644
+--- a/board/engicam/px30_core/Kconfig
++++ b/board/engicam/px30/Kconfig
+@@ -1,7 +1,7 @@
+ if TARGET_PX30_CORE
+ 
+ config SYS_BOARD
+-	default "px30_core"
++	default "px30"
+ 
+ config SYS_VENDOR
+ 	default "engicam"
+diff --git a/board/engicam/px30_core/MAINTAINERS b/board/engicam/px30/MAINTAINERS
+similarity index 100%
+rename from board/engicam/px30_core/MAINTAINERS
+rename to board/engicam/px30/MAINTAINERS
+diff --git a/board/engicam/px30_core/Makefile b/board/engicam/px30/Makefile
+similarity index 100%
+rename from board/engicam/px30_core/Makefile
+rename to board/engicam/px30/Makefile
+diff --git a/board/engicam/px30_core/px30_core.c b/board/engicam/px30/px30_core.c
+similarity index 100%
+rename from board/engicam/px30_core/px30_core.c
+rename to board/engicam/px30/px30_core.c
+-- 
+2.25.1
+
